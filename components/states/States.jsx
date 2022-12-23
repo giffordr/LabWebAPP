@@ -46,67 +46,48 @@ import Example from '../../modelData/Example'
  * at window.cs142models.statesModel().
  */
 class States extends React.Component {
+constructor(props){
+  super(props);
+  
+    this.state ={
+        index: 1,
+        done: false,
+	
+    };
+  
 
-  componentDidMount(){
-    Papa.parse("https://giffordr.github.io/KosikLabApp/Chemical_Shelf_Inventory.csv",
-                         {download: true,
-                          header:true,
-                         complete: function(results) {
-		  window.chemicalInventory = results.data; },
-    	});
-    Papa.parse("https://giffordr.github.io/KosikLabApp/Contacts.csv",
-                         {download: true,
-                          header:true,
-                         complete: function(results) {
-		  window.contacts = results.data; },
-    	});
-  }
+   
+}
   
 
 
-  handleButtonClick(buttonName, event) {
-    this.setState({ buttonWasClicked: buttonName });
+  componentDidMount(){
+    Papa.parse("https://giffordr.github.io/LabWebAPP/Chemical_Shelf_Inventory.csv",
+                         {download: true,
+                          header:true,
+                          complete: function(results){window.chemicalInventory = results.data},
+    	});
+    Papa.parse("https://giffordr.github.io/LabWebAPP/lab.csv",
+                         {download: true,
+                          header:true,
+                          complete: function(results){window.contacts = results.data},
+    	});  
   }
-    // Create state
-  state = {
 
-    // Get audio file in a variable
-    audio: new Audio('./components/states/A_dong_trimmed.mp3'),
+  
 
-    // Set initial state of song
-    isPlaying: false,
-    buttonWasClicked: '',
-  };
 
-  // Main function to handle both play and pause operations
-  playPause = () => {
+handleButtonClick(buttonName, event) {
+    this.setState({ buttonWasClicked: buttonName });
+}
 
-    // Get state of song
-    let isPlaying = this.state.isPlaying;
-
-    if (isPlaying) {
-      // Pause the song if it is playing
-      this.state.audio.load();
-      this.state.audio.volume = 0.5;
-      
-    } else {
-
-      // Play the song if it is paused
-      this.state.audio.volume = 0.5;
-      this.state.audio.play();
-    }
-
-    // Change the state of song
-    this.state.audio.play();
-    this.setState({ isPlaying: true });
-  };
 
   render() {
   
   return (
     
     <div className="App"> 
-
+      
       
       <header className="App-header-style">
         

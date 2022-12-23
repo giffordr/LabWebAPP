@@ -1,4 +1,4 @@
-import './Inventory.css';
+import './Contacts.css';
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -26,6 +26,7 @@ import Fade from '@mui/material/Fade';
 import ScienceIcon from '@mui/icons-material/Science';
 import BiotechIcon from '@mui/icons-material/Biotech';
 import Papa from 'papaparse';
+import CircularProgress from '@mui/material/CircularProgress';
 import {
   HashRouter, Route, Routes, Link, NavLink,
 } from 'react-router-dom';
@@ -33,7 +34,7 @@ import {
 
 import CloseIcon from '@mui/icons-material/Close';
 
-class Inventory extends React.Component {
+class Contacts extends React.Component {
 
   
 constructor(props){
@@ -66,6 +67,8 @@ constructor(props){
   this.handleClickReach = this.handleClickReach.bind(this);
   this.handleClickDifficulty = this.handleClickDifficulty.bind(this);
   this.checkInView = this.checkInView.bind(this);
+  this.handleLoading = this.handleLoading.bind(this);
+  this.handleCompleteContacts = this.handleCompleteContacts.bind(this);
 }
   
 handleClose = (event, reason) => {
@@ -75,7 +78,12 @@ handleClose = (event, reason) => {
     this.setState({open: false});
   };
 
-
+handleCompleteContacts(results){
+     window.contacts = results.data; 
+     this.setState({model: results.data});
+     var element = document.getElementById("NavMenu");
+          element.scrollIntoView({behavior:"smooth"});
+}
 
   
 handleChange(event) {
@@ -155,16 +163,12 @@ componentDidMount(){
           const element = document.getElementById("NavMenu");
           element.scrollIntoView({behavior:"smooth"});
           document.title = ("Kosik Lab- Inventory");
-          Papa.parse("https://giffordr.github.io/KosikLabApp/Chemical_Shelf_Inventory.csv",
+          Papa.parse("https://giffordr.github.io/LabWebAPP/lab.csv",
                          {download: true,
                           header:true,
-                         complete: function(results) {
-		 console.log(results); return(results.data)},
-    	})
-  
-  
-  
-                  
+                          complete: this.handleCompleteContacts,
+        	});
+                 
 };
 
 checkInView(id){
@@ -210,7 +214,93 @@ sortByProfit(array){
   let sortedAr = array.sort((a,b) => b.profit.toString().localeCompare(a.profit, 'en', {numeric: true}));
   return sortedAr;
 }
+handleLoading(){
 
+if(this.state.model){
+  console.log("all Clear!");
+  return( 
+  <div>
+    {this.state.model.find(element => element.Name.toLowerCase().includes(this.state.search.toLowerCase())) ?
+  
+    <div style={{ width:"100%", margin: "0 auto", alignItems:"center"}} >
+        
+      {this.handleSorting(this.state.model).filter(element => element.Name.toLowerCase().includes(this.state.search.toLowerCase())).map((item,idx) => (   
+        //{window.articleModels.articleListModel().map((item,idx) => (
+          
+        
+      <span>
+        <Grid container spacing={0} direction="column" justifyContent="center" p="5px" sx={{ display: { xs: 'none', md: 'flex' } }}>
+          <Fade in={true}>     
+          <Card sx={{ minWidth: 350, width:"100%", maxHeight: 400, "&:hover": { transform: 'scale(1.01)', transition: 'transform .4s'} }} >
+            <CardActionArea >
+              <CardContent >
+                  <Grid p="10px" container item spacing={3} justifyContent="center" alignItems="center" direction="column" style={{ display: "flex"}}>
+                         
+                        <Grid container item justifyContent="space-between">
+                             <Grid item>
+                                <Typography fontSize="11px">{item.Affiliation}: {item.Position}</Typography>
+                              </Grid>
+                             <Grid item>
+                                <Typography fontSize="11px">{item.Email}</Typography>
+                              </Grid>
+                        </Grid>
+                        <Grid item>
+                              <Typography fontSize="28px">{item.Name}</Typography>
+                        </Grid>
+                        
+     
+                     </Grid>
+                 </CardContent> 
+                
+             </CardActionArea>
+            </Card>
+          </Fade>
+  
+       </Grid>
+     
+      
+      
+      
+      <Grid container spacing={0} direction="column" alignItems="center" justifyContent="center" p="5px" sx={{ display: { xs: 'flex', md: 'none' } }}>
+            
+          <Card justifyContent="center" alignItems="center" sx={{ minWidth: 350, minHeight: 50, width:"100%", maxHeight: 450, "&:hover": { transform: 'scale(1.01)', transition: 'transform .4s'} }} >
+            <CardActionArea justifyContent="center" alignItems="center">
+            <CardContent justifyContent="center" alignItems="center">
+   
+                     <Grid p="10px" container item spacing={3} justifyContent="center" alignItems="center" direction="column" style={{ display: "flex"}}>
+                         
+                        <Grid container item justifyContent="space-between">
+                             <Grid item>
+                                <Typography fontSize="11px">{item.Affiliation}: {item.Position}</Typography>
+                              </Grid>
+                             <Grid item>
+                                <Typography fontSize="11px">{item.Email}</Typography>
+                              </Grid>
+                        </Grid>
+                        <Grid item>
+                              <Typography fontSize="24px">{item.Name}</Typography>
+                        </Grid>
+                        
+     
+                     </Grid>
+              
+                </CardContent>
+              </CardActionArea> 
+            </Card>
+          </Grid>
+      </span>
+     
+        ))}
+      
+    </div> : <div align="center" alignItem="center" justifyContent="center"> <Typography fontSize="24px">Sorry! We didn't find record of this reagent, in the lab. </Typography></div>}
+  </div>)
+  }
+  else{console.log("not good yet");
+  return(<Box m="auto" display="flex" alignItems="center" justifyContent="center">
+    <CircularProgress />
+</Box> )
+  }
+}
 
    
 render() {
@@ -220,7 +310,7 @@ render() {
       
     
 <Box sx={{maxWidth:1100}} alignItems="center" justifyContent="center" m="auto" pt="5px" >
-  {console.log(this.state.model)}
+  
   <Accordion style={{ background: 'transparent'}} elevation={0}>
 
     
@@ -251,98 +341,12 @@ render() {
           
         </AccordionDetails>
   </Accordion>
-    
-  {this.state.model.find(element => element[ 'Chemical Name' ].toLowerCase().includes(this.state.search.toLowerCase())) ?
-  
-  <div style={{ width:"100%", margin: "0 auto", alignItems:"center"}} >
-      
-    {this.handleSorting(this.state.model).filter(element => element[ 'Chemical Name' ].toLowerCase().includes(this.state.search.toLowerCase())).map((item,idx) => (   
-      //{window.articleModels.articleListModel().map((item,idx) => (
-        
-      
-    <span>
-      <Grid container spacing={0} direction="column" justifyContent="center" p="5px" sx={{ display: { xs: 'none', md: 'flex' } }}>
-        <Fade in={true}>     
-        <Card sx={{ minWidth: 350, width:"100%", maxHeight: 400, "&:hover": { transform: 'scale(1.01)', transition: 'transform .4s'} }} >
-          <CardActionArea >
-            <CardContent >
-                <Grid p="10px" container item spacing={3} justifyContent="center" alignItems="center" direction="column" style={{ display: "flex"}}>
-                       
-                      <Grid container item justifyContent="space-between">
-                           <Grid item>
-                              <Typography fontSize="11px">{item.Company}: {item['Product#']}</Typography>
-                            </Grid>
-                           <Grid item>
-                              <Typography fontSize="11px">{item.Quantity}</Typography>
-                            </Grid>
-                      </Grid>
-                      <Grid item>
-                            <Typography fontSize="28px">{item['Chemical Name']}</Typography>
-                      </Grid>
-                      <Grid container item justifyContent="space-between" >
-                          <Grid item>
-                            <ScienceIcon sx={{color:"gray"}}/>
-                          </Grid>
-                        <Grid item sx={{color:"purple"}}>
-                            <Typography fontSize="24px" color="purple" fontWeight="bold">{item['Letter Code']}</Typography>
-                          </Grid>
-                      </Grid>
-   
-                   </Grid>
-               </CardContent> 
-              
-           </CardActionArea>
-          </Card>
-        </Fade>
 
-     </Grid>
-   
-    
-    
-    
-    <Grid container spacing={0} direction="column" alignItems="center" justifyContent="center" p="5px" sx={{ display: { xs: 'flex', md: 'none' } }}>
-          
-        <Card justifyContent="center" alignItems="center" sx={{ minWidth: 350, minHeight: 50, width:"100%", maxHeight: 450, "&:hover": { transform: 'scale(1.01)', transition: 'transform .4s'} }} >
-          <CardActionArea justifyContent="center" alignItems="center">
-          <CardContent justifyContent="center" alignItems="center">
- 
-                   <Grid p="10px" container item spacing={3} justifyContent="center" alignItems="center" direction="column" style={{ display: "flex"}}>
-                       
-                      <Grid container item justifyContent="space-between">
-                           <Grid item>
-                              <Typography fontSize="11px">{item.Company}: {item['Product#']}</Typography>
-                            </Grid>
-                           <Grid item>
-                              <Typography fontSize="11px">{item.Quantity}</Typography>
-                            </Grid>
-                      </Grid>
-                      <Grid item>
-                            <Typography fontSize="24px">{item['Chemical Name']}</Typography>
-                      </Grid>
-                      <Grid container item justifyContent="space-between" >
-                          <Grid item>
-                            <ScienceIcon sx={{color:"gray"}}/>
-                          </Grid>
-                        <Grid item sx={{color:"purple"}}>
-                            <Typography fontSize="18px" color="purple" fontWeight="bold">{item['Letter Code']}</Typography>
-                          </Grid>
-                      </Grid>
-   
-                   </Grid>
-            
-              </CardContent>
-            </CardActionArea> 
-          </Card>
-        </Grid>
-    </span>
-   
-      ))}
-    
-  </div> : <div align="center" alignItem="center" justifyContent="center"> <Typography fontSize="24px">Sorry! We didn't find record of this reagent, in the lab. </Typography></div> }
+  {this.handleLoading()}
        
 </Box>
     
     );
   }
 }
-export default Inventory;
+export default Contacts;
