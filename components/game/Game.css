@@ -1,0 +1,24 @@
+.Body-again{
+  background:linear-gradient( -45deg, #9702a7,#0e7c07);
+  background-size: 400% 400%;
+  min-height: 90vmin;
+  animation: gradient 50s ease infinite;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}

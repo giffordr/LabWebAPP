@@ -1,0 +1,8 @@
+{
+	"name": "Kosik Inventory: a lab inventory management web app",
+	"short_name": "Inventory",
+	"start_url": "app.html",
+	"display": "standalone",
+	"theme_color": "#00966f",
+    "background_color": "#c36417"
+}

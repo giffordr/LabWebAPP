@@ -1,0 +1,67 @@
+.App {
+  text-align: left;
+}
+.Body{
+	margin:15px;
+}
+
+.App-logo {
+  height: 55vmin;
+  pointer-events: none;
+}
+
+.subHeader {
+  opacity: 0.8;
+
+}
+
+button {
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: default;
+    overflow: hidden;
+    outline: none;
+}
+
+
+
+
+
+.Title {
+	font-style: italic;
+	
+}
+.Description{
+	align: center;
+}
+
+.MuiTypography-h6{
+	line-height: 60%
+}
+
+a:link { text-decoration: none; }
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
