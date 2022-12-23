@@ -10,7 +10,6 @@ import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
-import dong from './A_resonant_trimmed_2.mp3'
 import * as randomName from 'jquery-csv'
 import fs from 'fs'
 import Papa from 'papaparse';
