@@ -79,7 +79,7 @@ render() {
           variant="body2"
           color="text.secondary"
         >
-          January 6th, 1:00 PM
+          January 27th, 1:00 PM
         </TimelineOppositeContent>
         <TimelineSeparator>
           <TimelineConnector sx={{ bgcolor: 'secondary.main' }}/>
@@ -90,9 +90,9 @@ render() {
         </TimelineSeparator>
         <TimelineContent sx={{ py: '12px', px: 2 }}>
           <Typography variant="h6" component="span">
-            Luana
+            Lenzie
           </Typography>
-          <Typography>Food prepared by: Ray</Typography>
+          <Typography>Food prepared by: Sarah</Typography>
         </TimelineContent>
       </TimelineItem>
       <TimelineItem>
@@ -101,7 +101,7 @@ render() {
           variant="body2"
           color="text.secondary"
         >
-          January 13th, 1:00 PM
+          February 3rd, 1:00 PM
         </TimelineOppositeContent>
         <TimelineSeparator>
           <TimelineConnector />
@@ -112,9 +112,9 @@ render() {
         </TimelineSeparator>
         <TimelineContent sx={{ py: '12px', px: 2 }}>
           <Typography variant="h6" component="span">
-            Dasol
+            Andrew
           </Typography>
-          <Typography>Food prepared by: Ray</Typography>
+          <Typography>Food prepared by: Lenzie</Typography>
         </TimelineContent>
       </TimelineItem>
       <TimelineItem>
@@ -123,7 +123,7 @@ render() {
           variant="body2"
           color="text.secondary"
         >
-          January 20th, 11:00 AM
+          February 10th, 1:00 PM
         </TimelineOppositeContent>
         <TimelineSeparator>
           <TimelineConnector />
@@ -134,9 +134,9 @@ render() {
         </TimelineSeparator>
         <TimelineContent sx={{ py: '12px', px: 2 }}>
           <Typography variant="h6" component="span">
-            Israel
+            Camila
           </Typography>
-          <Typography>Food Prepared by: Ray</Typography>
+          <Typography>Food Prepared by: Andrew</Typography>
         </TimelineContent>
       </TimelineItem>
       <TimelineItem>
@@ -145,7 +145,7 @@ render() {
           variant="body2"
           color="text.secondary"
         >
-          January 27th, 1:00 PM
+          February 17th, 1:00 PM
         </TimelineOppositeContent>
         <TimelineSeparator>
           <TimelineConnector  />
@@ -156,9 +156,9 @@ render() {
         </TimelineSeparator>
         <TimelineContent sx={{ py: '12px', px: 2 }}>
           <Typography variant="h6" component="span">
-            Sarah
+            Juliana
           </Typography>
-          <Typography>Food prepared by: Israel</Typography>
+          <Typography>Food prepared by: Ray</Typography>
         </TimelineContent>
       </TimelineItem>
     </Timeline>
