@@ -56,6 +56,8 @@ componentDidMount(){
           document.title = ("Kosik Lab- Events");
                   
 };
+
+    // set state to default values for Presenter name, Date, time, and Food Person. Load dataset, and update those parameters.
  
 render() {
   

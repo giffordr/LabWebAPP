@@ -1,5 +1,8 @@
 "use strict";
-
+var csv = require('jquery-csv');
+var FileReader = require('filereader')
+  , fileReader = new FileReader()
+  ;
 
 /* jshint node: true */
 /*
@@ -25,62 +28,42 @@
  *   occupation (string) - The occupation of the user.
  */
 
+ 
+
 (function() {
    
 
    // Instantiate 'articles' list.
-   
-   var articles = [];
-   
-   var colors =   {
-            green: "rgba(75, 192, 192, 1)",
-            yellow: "rgba(255, 206, 86, 1)",
-            orange: "rgba(255, 206, 86, 1)",
-            red: "rgba(255, 99, 132, 1)",
-          };
+
   
-   var colorsHover =  {
-            green: "rgba(75, 192, 192, 0.6)",
-            yellow: "rgba(255, 206, 86, 0.6)",
-            orange: "rgba(255, 206, 86, 0.6)",
-            red: "rgba(255, 99, 132, 0.6)",
-          };
+ 
    
-   // Create function to add new article to 'articles' list
+   var presentation = [];
+   var people = [];
+   var reagents = [];
+
+   var presentationURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSMqDeQj_YXSyMoVxK_wk1Iw3fyvRDHFvEfXJJzozvdLT17iCS6Yg29vts86fWcmdbv5rfpV0WcDcTo/pub?gid=1810366854&single=true&output=csv";
+   var peopleURL = "";
+   var reagentsURL = "";
    
-   var addNewArticle = (TTP, Cost, Exposure, Difficulty, Profit, Header, SubHeader, Author, DateCreated, ArticleTitle, Category, TypeOf, ID) => {
+   
+   // Create function to add updated datasets
+   var addData = (fileName, urlData) => {
+
+    var aLink = document.createElement('a');
+    var evt = document.createEvent("HTMLEvents");
+    evt.initEvent("click");
+    aLink.download = fileName;
+    aLink.href = urlData;
+    aLink.click(evt);
+}
+
+   // Create function to create datasets
+   var addDataSet = (URL) => {
   
-       let score = TTP + Cost + Exposure + Difficulty + Profit;
-     
-       let tempData = [
-           { name: "TTP", bgcolor: "rgba(255, 99, 132, 1)", completed: TTP , tooltipTitle: "Time to Profitability (TTP)",
-            tooltipStart: "This metric capture the time it takes to reach a point of making a profit. ", tooltipGreen:"Green", tooltipMiddle: " may indicate something that can be used to make money instantly. Whereas", tooltipRed:" Red", tooltipEnd:" may indicate that a significant amount of time (i.e. years) might need to be invested before becoming profitable."},
-           { name: "Cost", bgcolor: "rgba(75, 192, 192, 1)", completed: Cost, tooltipTitle: "Cost", tooltipStart: "This metric captures the upfront cost needed to pursue this topic. ", tooltipGreen:"Green", tooltipMiddle: " may indicate something that anyone can afford to try it. Whereas", tooltipRed:" Red",tooltipEnd:" may indicate that small business loan might be needed for most people."},
-           { name: "Reach", bgcolor: "rgba(255, 206, 86, 1)", completed: Exposure, tooltipTitle: "Reach", tooltipStart: "This metric captures how well the topic being explored may help to gain exposure as a musician. ", tooltipGreen:"Green", tooltipMiddle: " may indicate a great way to get your music out many people. Whereas", tooltipRed:" Red",tooltipEnd:" may indicate something that doesn't have the ability to spread to many people outside of word of mouth."},
-           { name: "Difficulty", bgcolor: "rgba(255, 99, 132, 1)", completed: Difficulty, tooltipTitle: "Difficulty", tooltipStart: "This metric captures the amount, and difficulty level, of work needed to start, and mantain, the topic being explored as a revenue stream. ", tooltipGreen:"Green", tooltipMiddle: " may indicate something that anyone can do. Whereas", tooltipRed:" Red",tooltipEnd: " may indicate something that requires a developed skillset that would be a large learning curve for most people."},
-           { name: "Profit", bgcolor: "rgba(75, 192, 192, 1)", completed: Profit, tooltipTitle: "Profit", tooltipStart: "This metric captures the potential that the topic being explored has to make a net profit. ", tooltipGreen:"Green", tooltipMiddle: " may indicate something that has potential to direclty provide a livable income for the average person. Whereas", tooltipRed:" Red",tooltipEnd: " may be something that in very unlikely to directly yeild a large net profit."},
-        ];
-     
-       let pieAmount = [0,0,0,0];
-     
-       let barColor = [
-              "rgba(75, 192, 192, 1)",
-              "rgba(255, 206, 86, 1)",
-              "rgba(255, 206, 86, 1)",
-              "rgba(255, 99, 132, 1)",
-             ];
-     
-       let labelColor = [
-              "rgba(75, 192, 192, 1)",
-              "rgba(255, 206, 86, 1)",
-              "rgba(255, 206, 86, 1)",
-              "rgba(255, 99, 132, 1)",
-              "rgba(255, 99, 132, 1)",
-             ];
-     
-       let hoverColor = [];
-     
-       let chartLabels = ["TTP","Cost","Reach", "Difficulty", "Profit"];
+       let URL = URL;
+       let csvFile = File
+       let data = $.csv.toObjects(csvFile):
        
        tempData.map((item,idx) => {
          
@@ -170,16 +153,10 @@
 };
 
 // Add all articles here   
-   
-addNewArticle(16,12,8,15,4,"Streaming-Services", "Spotify", "Making Cents Team", "10/25/19", "Spotify: Which streaming service is best?", "Music", "Article", "Thing1");
-addNewArticle(2,6,12,15,18, "Streaming-Services", "Apple-Music", "Making Cents Team", "10/26/22", "Apple Music: Is it worth the trouble?", "Tech", "Article", "Thing2");
-addNewArticle(19,18,17,16,18, "Streaming-Services", "Apple-Music", "Making Cents Team", "10/23/22", "Releasing and album or and EP?", "Art", "Article", "Thing3");
-addNewArticle(3,3,17,10,11, "Streaming-Services", "Apple-Music", "Making Cents Team", "10/25/22", "Apple Music: Is it worth the trouble?", "Cooking", "Article", "Thing4");
-addNewArticle(6,3,13,10,12, "Streaming-Services", "Apple-Music", "Making Cents Team", "10/26/22", "Aveeshka: making art make cents?", "Misc", "Article", "Thing5");
-addNewArticle(6,3,13,10,12, "Streaming-Services", "Apple-Music", "Making Cents Team", "10/26/21", "Nancy: Here in SB yayyyyy!", "Design", "Article", "Thing6");
-addNewArticle(10,8,12,9,11, "Streaming-Services", "Apple-Music", "Making Cents Team", "10/22/21", "Which pastries have the most earning potential?", "Baking", "Article", "Thing7");
-addNewArticle(10,8,12,9,11, "Streaming-Services", "Apple-Music", "Making Cents Team", "10/18/21", "Web Design: How to make it profitable", "Design", "Article", "Thing8");
-addNewArticle(10,8,12,9,11, "Streaming-Services", "Apple-Music", "Making Cents Team", "10/25/21", "Starting your own gym?", "Fitness", "Article", "Thing9");
+downloadFile('Test.csv', 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSMqDeQj_YXSyMoVxK_wk1Iw3fyvRDHFvEfXJJzozvdLT17iCS6Yg29vts86fWcmdbv5rfpV0WcDcTo/pub?gid=1810366854&single=true&output=csv');
+
+
+
 
    
    var articleListModel = function() {
