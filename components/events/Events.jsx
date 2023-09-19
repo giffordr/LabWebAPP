@@ -1,5 +1,7 @@
 import './Events.css';
 
+
+
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -42,6 +44,7 @@ import TimelineConnector from '@mui/lab/TimelineConnector';
 import TimelineContent from '@mui/lab/TimelineContent';
 import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
 import TimelineDot from '@mui/lab/TimelineDot';
+import Skeleton from '@mui/material/Skeleton';
 
 import DesignServicesIcon from '@mui/icons-material/DesignServices';
 import ArchitectureIcon from '@mui/icons-material/Architecture';
@@ -50,13 +53,59 @@ import CameraOutdoorIcon from '@mui/icons-material/CameraOutdoor';
 import ConnectWithoutContactIcon from '@mui/icons-material/ConnectWithoutContact';
 
 class Events extends React.Component {
+constructor(props){
+super(props);
+
+this.state={
+        model: [],
+        change: false,
+}
+    this.pickData = this.pickData.bind(this);
+    this.callBack = this.callBack.bind(this);
+}
+
 componentDidMount(){
           const element = document.getElementById("NavMenu");
           element.scrollIntoView({behavior:"smooth"});
           document.title = ("Kosik Lab- Events");
-                  
+          window.kosikModels.presentationModel().then(process => this.setState({model: this.pickData(process.slice(1,process.length)), change: true}));                
 };
 
+callBack(change){
+    this.setState({change: change})
+}
+   
+pickData (model){
+    console.log("entered");
+    const result = [];
+    
+    model.filter(function(item) { 
+        
+        var [MM, DD, YYYY] = item[0].split('/');
+       
+        var myDate = new Date(YYYY, MM-1, DD);
+        
+        var currentDate = new Date();
+        console.log(myDate);
+        console.log(currentDate);
+        
+        if (myDate > currentDate){
+            console.log(item[0])
+            console.log("Winner")
+            result.push(item);
+        } 
+    })
+    
+    if(result.length > 1){
+        console.log(result[0])
+        return result;
+    }
+    else{
+        return new Array (['','','',''],['','','',''],['','','',''],['','','','']);
+    }
+        
+    
+}
     // set state to default values for Presenter name, Date, time, and Food Person. Load dataset, and update those parameters.
  
 render() {
@@ -81,7 +130,7 @@ render() {
           variant="body2"
           color="text.secondary"
         >
-          January 27th, 1:00 PM
+            {this.state.change ? <div>{this.state.model[0][0]}, {this.state.model[0][1]}</div> : <Skeleton animation="wave" />}
         </TimelineOppositeContent>
         <TimelineSeparator>
           <TimelineConnector sx={{ bgcolor: 'secondary.main' }}/>
@@ -92,9 +141,9 @@ render() {
         </TimelineSeparator>
         <TimelineContent sx={{ py: '12px', px: 2 }}>
           <Typography variant="h6" component="span">
-            Lenzie
+              {this.state.change ? <div>{this.state.model[0][2]}</div> : <Skeleton animation="wave" />}
           </Typography>
-          <Typography>Food prepared by: Sarah</Typography>
+          <Typography>{this.state.change ? <div>Food prepared by: {this.state.model[0][3]}</div> : <Skeleton animation="wave" />}</Typography>
         </TimelineContent>
       </TimelineItem>
       <TimelineItem>
@@ -103,7 +152,7 @@ render() {
           variant="body2"
           color="text.secondary"
         >
-          February 3rd, 1:00 PM
+         {this.state.change ? <div>{this.state.model[1][0]}, {this.state.model[1][1]}</div> : <Skeleton animation="wave" />}
         </TimelineOppositeContent>
         <TimelineSeparator>
           <TimelineConnector />
@@ -114,9 +163,9 @@ render() {
         </TimelineSeparator>
         <TimelineContent sx={{ py: '12px', px: 2 }}>
           <Typography variant="h6" component="span">
-            Andrew
+           {this.state.change ? <div>{this.state.model[1][2]}</div> : <Skeleton animation="wave" />}
           </Typography>
-          <Typography>Food prepared by: Lenzie</Typography>
+          <Typography>{this.state.change ? <div>Food prepared by: {this.state.model[1][3]}</div> : <Skeleton animation="wave" />}</Typography>
         </TimelineContent>
       </TimelineItem>
       <TimelineItem>
@@ -125,7 +174,7 @@ render() {
           variant="body2"
           color="text.secondary"
         >
-          February 10th, 1:00 PM
+          {this.state.change ? <div>{this.state.model[2][0]}, {this.state.model[2][1]}</div> : <Skeleton animation="wave" />}
         </TimelineOppositeContent>
         <TimelineSeparator>
           <TimelineConnector />
@@ -136,9 +185,9 @@ render() {
         </TimelineSeparator>
         <TimelineContent sx={{ py: '12px', px: 2 }}>
           <Typography variant="h6" component="span">
-            Camila
+           {this.state.change ? <div>{this.state.model[2][2]}</div> : <Skeleton animation="wave" />}
           </Typography>
-          <Typography>Food Prepared by: Andrew</Typography>
+          <Typography>{this.state.change ? <div>Food Prepared by: {this.state.model[2][3]}</div> : <Skeleton animation="wave" />}</Typography>
         </TimelineContent>
       </TimelineItem>
       <TimelineItem>
@@ -147,7 +196,7 @@ render() {
           variant="body2"
           color="text.secondary"
         >
-          February 17th, 1:00 PM
+          {this.state.change ? <div>{this.state.model[3][0]}, {this.state.model[3][1]}</div> : <Skeleton animation="wave" />}
         </TimelineOppositeContent>
         <TimelineSeparator>
           <TimelineConnector  />
@@ -158,9 +207,9 @@ render() {
         </TimelineSeparator>
         <TimelineContent sx={{ py: '12px', px: 2 }}>
           <Typography variant="h6" component="span">
-            Juliana
+           {this.state.change ? <div>{this.state.model[3][2]}</div> : <Skeleton animation="wave" />}
           </Typography>
-          <Typography>Food prepared by: Ray</Typography>
+          <Typography>{this.state.change ? <div>Food prepared by: {this.state.model[3][3]}</div> : <Skeleton animation="wave" />}</Typography>
         </TimelineContent>
       </TimelineItem>
     </Timeline>
@@ -183,4 +232,5 @@ render() {
   
 }
 }
+
 export default Events;

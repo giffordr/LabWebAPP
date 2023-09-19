@@ -1,8 +1,5 @@
 "use strict";
-var csv = require('jquery-csv');
-var FileReader = require('filereader')
-  , fileReader = new FileReader()
-  ;
+
 
 /* jshint node: true */
 /*
@@ -38,16 +35,54 @@ var FileReader = require('filereader')
   
  
    
-   var presentation = [];
-   var people = [];
-   var reagents = [];
+   var presentation = '';
+   var people = '';
+   var reagents = '';
 
    var presentationURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSMqDeQj_YXSyMoVxK_wk1Iw3fyvRDHFvEfXJJzozvdLT17iCS6Yg29vts86fWcmdbv5rfpV0WcDcTo/pub?gid=1810366854&single=true&output=csv";
    var peopleURL = "";
    var reagentsURL = "";
+
+   const CSVToArray = (data, delimiter = ',', omitFirstRow = false) =>
+  data
+    .slice(omitFirstRow ? data.indexOf('\n') + 1 : 0)
+    .split('\n')
+    .map(v => v.split(delimiter));
+
+   // Fetch data from published CSV file
+   var downloadCsv = async (url) => {
+    
+    try {
+        const target = url; //file
+        //const target = `https://SOME_DOMAIN.com/api/data/log_csv?$"queryString"`; //target can also be api with req.query
+        
+        const res = await fetch(target, {
+            method: 'get',
+            headers: {
+                'content-type': 'text/csv;charset=UTF-8',
+                //'Authorization': //in case you need authorisation
+            }
+        });
+
+        if (res.status === 200) {
+
+            const data = await res.text();
+            //console.log(data);
+            let dataOut = CSVToArray(data);
+          
+            return dataOut;
+            
+            
+
+        } else {
+            console.log(`Error code ${res.status}`);
+        }
+    } catch (err) {
+        console.log(err)
+    }
+}
    
-   
-   // Create function to add updated datasets
+   // Download published CSV File
    var addData = (fileName, urlData) => {
 
     var aLink = document.createElement('a');
@@ -59,110 +94,29 @@ var FileReader = require('filereader')
 }
 
    // Create function to create datasets
-   var addDataSet = (URL) => {
+   var addDataSet = (url) => {
   
-       let URL = URL;
-       let csvFile = File
-       let data = $.csv.toObjects(csvFile):
+     
+       //let data = $.csv.toObjects(csvFile);
        
-       tempData.map((item,idx) => {
-         
-         if (item.completed >= 15){
-           item.bgcolor = colors.green;
-           pieAmount[0] = pieAmount[0]+20;
-           barColor[0] =colors.green;
-           labelColor[idx] =colors.green;
-           hoverColor[0] = colorsHover.green;
-         }; 
-         
-         if (item.completed >= 10  && item.completed< 15){
-           item.bgcolor = colors.yellow;
-           pieAmount[1] = pieAmount[1]+20;
-           barColor[1] =colors.yellow;
-           labelColor[idx] =colors.yellow;
-           hoverColor[1] = colorsHover.yellow;
-         }; 
-         
-         if (item.completed >= 5  && item.completed< 10){
-           item.bgcolor = colors.orange;
-           pieAmount[2] = pieAmount[2]+20;
-           barColor[2] =colors.orange;
-           labelColor[idx] =colors.orange;
-           hoverColor[2] = colorsHover.orange;
-         };
-         
-         if (item.completed >= 0  && item.completed< 5){
-           item.bgcolor = colors.red;
-           pieAmount[3] = pieAmount[3]+20;
-           barColor[3] =colors.red;
-           labelColor[idx] =colors.red;
-           hoverColor[3] = colorsHover.red;
-         };
-       });
        
-       articles.push({title: ArticleTitle, header: Header, subHeader: SubHeader, 
-                      author: Author, dateCreated: DateCreated, category: Category, typeOf: TypeOf, id: ID,
-                      score: score, TTP: TTP, difficulty: Difficulty,
-                      reach: Exposure, cost: Cost, profit: Profit,
-                      data: tempData, datastuff: {
-             labels: chartLabels,
-             datasets: [
-               {
-                 data: pieAmount,
-                 backgroundColor: barColor,
-                 borderColor: barColor,
-                 hoverBackgroundColor: hoverColor,
-                 borderWidth: 0.4,
-                 weight: 0.1,
-                 
-               },
-             ],
-           },
-            options: {
-               cutout: "90%",
-               responsive: true,
-               maintainAspectRatio: false,
-               centerText: {
-                       color: "black",
-                       value: score,
-                       fontSizeAdjust: 1 // increase font size 20% based on default font size
-                     },
-               
-               plugins: {
-                   legend: {
-                       display: false,
-                       
-                   },
-                 tooltip: {
-                   enabled: false,
-                    callbacks: {
-                     label: function(context) { 
-                       var label = chartLabels[context.dataIndex];
-                       return label;
-                                              },
-                               }
-                           },
-                         },
-                  
-               
-                     
-                     },
-                           
-     });
     
 };
-
+window.loaded = false;
 // Add all articles here   
-downloadFile('Test.csv', 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSMqDeQj_YXSyMoVxK_wk1Iw3fyvRDHFvEfXJJzozvdLT17iCS6Yg29vts86fWcmdbv5rfpV0WcDcTo/pub?gid=1810366854&single=true&output=csv');
+//addData('Test.csv', 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSMqDeQj_YXSyMoVxK_wk1Iw3fyvRDHFvEfXJJzozvdLT17iCS6Yg29vts86fWcmdbv5rfpV0WcDcTo/pub?gid=1810366854&single=true&output=csv');
+presentation = downloadCsv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSMqDeQj_YXSyMoVxK_wk1Iw3fyvRDHFvEfXJJzozvdLT17iCS6Yg29vts86fWcmdbv5rfpV0WcDcTo/pub?gid=1810366854&single=true&output=csv');
 
 
 
 
+   var presentationModel = function() {
+                     const presentationCopy = presentation;
+                     return presentationCopy;
+                  };
+                     
+                     
    
-   var articleListModel = function() {
-      const articlesCopy = articles;
-      return articlesCopy;
-   };
 
    var userModel = function(userId) {
       for (var i = 0; i < users.length; i++) {
@@ -187,23 +141,26 @@ downloadFile('Test.csv', 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSMqDe
          return (newArticleTitle === articleTitle);
       });
    };
-
-
-   var articleModels =  {
-      articleListModel: articleListModel,
-      specificArticleModel: specificArticleModel,
-
-      
-   };
+   
+   var kosikModels =  {
+                     presentationModel: presentationModel,
+                     //specificArticleModel: specificArticleModel,
+   
+         
+                   };
 
    if( typeof exports !== 'undefined' ) {
-      // We're being loaded by the Node.js module loader ('require') so we use its
-      // conventions of returning the object in exports.
-      exports.articleModels = articleModels;
-   } else {
-      // We're not in the Note.js module loader so we assume we're being loaded
-      // by the browser into the DOM.
-      window.articleModels = articleModels;
-   }
+         // We're being loaded by the Node.js module loader ('require') so we use its
+         // conventions of returning the object in exports.
+         exports.kosikModels = kosikModels;
+      } else {
+         // We're not in the Note.js module loader so we assume we're being loaded
+         // by the browser into the DOM.
+         window.kosikModels = kosikModels;
+      }
+
+  
+
+   
    
 })();
